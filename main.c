@@ -18,7 +18,7 @@ int main() {
 
 void controlLoop(){
     srand(time(NULL)); // Punkt startowy, potrzebny generowania serii pseudolosowych liczb
-    while (1) { //nieskonczona pętla, program ma chodzic non stop
+    while (1) { //nieskończona pętla, program ma działać non stop
         printMenu(); //wypisujemy menu
         int choice;
         scanf("%d", &choice);
@@ -57,12 +57,13 @@ char *generatePassword(int choice, int length) {
 }
 
 char *drawCharacters(int passwordLength, char *array) {
-    char *password = malloc(passwordLength); //dynamiczne przydzielenie pamięci.
+    char *password = malloc(passwordLength); //dynamiczne zaalakowanie pamięci.
     int arrayLength = strlen(array); //pobieramy dlugosc tablicy ze znakami
-    for (int i = 0; i < passwordLength; i++) {
+
+    for (int i = 0; i < passwordLength; i++)
         password[i] = array[rand()%arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc tablicy
-    }
-    password[passwordLength] = '\0';
+
+    password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wyświetlania
     return password;
 }
 
