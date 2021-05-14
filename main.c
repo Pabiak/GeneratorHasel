@@ -11,6 +11,8 @@ char *drawCharacters(int length, char *array);
 
 void controlLoop();
 
+int getInt();
+
 int main() {
     controlLoop(); //głowna funkcja programu
     return 0;
@@ -18,56 +20,63 @@ int main() {
 
 void controlLoop(){
     srand(time(NULL)); // Punkt startowy, potrzebny generowania serii pseudolosowych liczb
-    while (1) { //nieskończona pętla, program ma działać non stop
-        printMenu(); //wypisujemy menu
-        int choice;
-        scanf("%d", &choice);
+    while (1) { //nieskończona pętla, program ma się zapętlać
+        printMenu();
+        int choice = getInt();
         if (choice == 0) break; //w przypadku wyboru 0 program ma się zakończyć
         const char *constant = "Podaj dlugosc hasla:";
         printf("%s", constant);
-        int passwordLength;
-        scanf("%d", &passwordLength);
+        int passwordLength = getInt();
         char *password = generatePassword(choice, passwordLength); //funkcja generatePassword zwraca haslo do password
         printf("%s\n", password);
         free(password); //zwalniamy pamięc po dynamicznym zaalokowaniu jej
-        system("pause"); //pauza
-        system("cls");//czyszczenie ekranu
+        system("pause");
     }
 }
 
-char *generatePassword(int choice, int length) {
-    //poniżej tablice, z których będą losowane znaki
+int getInt() {
+    int choice,temp,status;
+    status = scanf("%d", &choice); //scanf zwróci 1 - true lub 0 - false do status
+    while(status != 1){ //dopóki status nie będzie równy true
+        temp = getchar();
+        status = scanf("%d", &choice);
+    }
+    return choice;
+}
+
+char *generatePassword(int choice, int passwordLength) {
     char *lettersArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     char *numbersArray = "1234567890";
     char *lettersNumbersArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     char *everythingArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+?;:<>,.|`~";
 
-    //do losowania znaków używam jednej funkcji, zmieniam jedynie tablice, z której są losowane
+    //do losowania znaków używam jednej funkcji, zmieniam jedynie ciągu znaków, z których są losowane
     switch (choice) {
         case 1:
-            return drawCharacters(length, lettersArray);
+            return drawCharacters(passwordLength, lettersArray);
         case 2:
-            return drawCharacters(length, numbersArray);
+            return drawCharacters(passwordLength, numbersArray);
         case 3:
-            return drawCharacters(length, lettersNumbersArray);
+            return drawCharacters(passwordLength, lettersNumbersArray);
         case 4:
         default:
-            return drawCharacters(length, everythingArray);
+            return drawCharacters(passwordLength, everythingArray);
     }
 }
 
 char *drawCharacters(int passwordLength, char *array) {
     char *password = malloc(passwordLength); //dynamiczne zaalakowanie pamięci.
-    int arrayLength = strlen(array); //pobieramy dlugosc tablicy ze znakami
+    unsigned int arrayLength = strlen(array); //pobieramy dlugosc łańcucha znaków
 
     for (int i = 0; i < passwordLength; i++)
-        password[i] = array[rand()%arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc tablicy
+        password[i] = array[rand()%arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
 
     password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wyświetlania
     return password;
 }
 
 void printMenu() {
+    system("cls");
     printf("Generator hasel!\n");
     printf("Wybierz z czego ma sie skladac twoje haslo\n");
     printf("0.Wyjscie\n");
