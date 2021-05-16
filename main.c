@@ -35,13 +35,14 @@ void controlLoop(){
 }
 
 int getInt() {
-    int choice,temp,status;
-    status = scanf("%d", &choice); //scanf zwróci 1 - true lub 0 - false do status
+    int integer,temp,status;
+    status = scanf("%d", &integer); //scanf zwróci 1 - true lub 0 - false do status
     while(status != 1){ //dopóki status nie będzie równy true
         temp = getchar();
-        status = scanf("%d", &choice);
+        printf("Wprowadz cyfre!\n");
+        status = scanf("%d", &integer);
     }
-    return choice;
+    return integer;
 }
 
 char *generatePassword(int choice, int passwordLength) {
