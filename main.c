@@ -13,12 +13,14 @@ void controlLoop();
 
 int getInt();
 
+void savePasswordToFile(char *password);
+
 int main() {
     controlLoop(); //głowna funkcja programu
     return 0;
 }
 
-void controlLoop(){
+void controlLoop() {
     srand(time(NULL)); // Punkt startowy, potrzebny generowania serii pseudolosowych liczb
     while (1) { //nieskończona pętla, program ma się zapętlać
         printMenu();
@@ -29,17 +31,16 @@ void controlLoop(){
         unsigned int passwordLength = getInt();
         char *password = generatePassword(choice, passwordLength); //funkcja generatePassword zwraca haslo do password
         printf("%s\n", password);
+        savePasswordToFile(password);
         free(password); //zwalniamy pamięc po dynamicznym zaalokowaniu jej
-        system("pause");
     }
 }
 
 int getInt() {
-    int integer,temp,status;
+    int integer, temp, status;
     status = scanf("%d", &integer); //scanf zwróci 1 - true lub 0 - false do status
-    while(status != 1){ //dopóki status nie będzie równy true
+    while (status != 1) { //dopóki status nie będzie równy true
         temp = getchar();
-        printf("Wprowadz cyfre!\n");
         status = scanf("%d", &integer);
     }
     return integer;
@@ -70,7 +71,7 @@ char *drawCharacters(unsigned int passwordLength, char *array) {
     unsigned int arrayLength = strlen(array); //pobieramy dlugosc łańcucha znaków
 
     for (int i = 0; i < passwordLength; i++)
-        password[i] = array[rand()%arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
+        password[i] = array[rand() % arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
 
     password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wyświetlania
     return password;
@@ -85,4 +86,18 @@ void printMenu() {
     printf("2.Cyfry\n");
     printf("3.Litery i cyfry\n");
     printf("4.Litery, cyfry i znaki specjalne\n");
+}
+
+void savePasswordToFile(char *password) {
+    printf("Czy chcesz zapisac haslo? t/n: ");
+    char choice,temp;
+    temp = getchar();
+    scanf("%c",&choice);
+    if(choice == 'T' || choice == 't'){
+        FILE *file = fopen("password.txt", "w");
+        if (file == NULL)
+            printf("Nie udalo sie zapisac pliku\n");
+        fputs(password,file);
+        fclose(file);
+    }
 }
