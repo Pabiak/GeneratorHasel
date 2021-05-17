@@ -91,13 +91,13 @@ void printMenu() {
 void savePasswordToFile(char *password) {
     printf("Czy chcesz zapisac haslo? t/n: ");
     char choice,temp;
-    temp = getchar();
+    temp = getchar(); //taki bufor dla entera
     scanf("%c",&choice);
     if(choice == 'T' || choice == 't'){
-        FILE *file = fopen("password.txt", "w");
+        FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
         if (file == NULL)
             printf("Nie udalo sie zapisac pliku\n");
-        fputs(password,file);
-        fclose(file);
+        fputs(password,file); //zapis
+        fclose(file); //zamknięcie pliku
     }
 }
