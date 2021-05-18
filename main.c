@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h> //potrzebne do time() w srand
 #include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen();
-#include <windows.h>
+#include <windows.h> //potrzebne do sleep i handle
+
 void printMenu();
 
 char *generatePassword(int choice, int length);
@@ -77,7 +78,8 @@ char *drawCharacters(int passwordLength, char *array) {
     int arrayLength = strlen(array); //pobieramy dlugosc łańcucha znaków
 
     for (int i = 0; i < passwordLength; i++)
-        password[i] = array[rand() % arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
+        password[i] = array[rand() %
+                            arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
 
     password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wyświetlania
     return password;
@@ -99,46 +101,37 @@ void printMenu() {
 
 void animation(char *text) {
     for (int i = 0; i < strlen(text); ++i) {
-        printf("%c",text[i]);
+        printf("%c", text[i]);
         Sleep(30);
     }
 }
 
 void savePasswordToFile(char *password) {
     printf("Czy chcesz zapisac haslo? t/n: ");
-    char choice,temp;
+    char choice, temp;
     temp = getchar(); //taki bufor dla entera
-    scanf("%c",&choice);
-    if(choice == 'T' || choice == 't'){
+    scanf("%c", &choice);
+    if (choice == 'T' || choice == 't') {
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
-        if (file == NULL)
-            setColor("czerwony");
+        if (file == NULL) {
+            setColor("red");
             printf("Nie udalo sie zapisac pliku\n");
-        setColor("szary");
-        fputs(password,file); //zapis
+            setColor("gray");
+        }
+        fputs(password, file); //zapis
         fclose(file); //zamknięcie pliku
     }
 }
-void setColor(char *color)
-{
+
+void setColor(char *color) {
     HANDLE hOut;
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (color == "green")
-    {
         SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    }
     else if (color == "red")
-    {
         SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-    }
     else if (color == "blue")
-    {
         SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    }
     else if (color == "gray")
-    {
         SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
-    }
 }
-
-
