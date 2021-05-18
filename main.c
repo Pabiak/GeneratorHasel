@@ -15,7 +15,9 @@ int getInt();
 
 void savePasswordToFile(char *password);
 
-void kolor(char *kolor);
+void setColor(char *color);
+
+void animation();
 
 int main() {
     controlLoop(); //głowna funkcja programu
@@ -32,9 +34,9 @@ void controlLoop() {
         printf("%s", constant);
         unsigned int passwordLength = getInt();
         char *password = generatePassword(choice, passwordLength); //funkcja generatePassword zwraca haslo do password
-        kolor("czerwony");
+        setColor("red");
         printf("%s\n", password);
-        kolor("szary");
+        setColor("gray");
         savePasswordToFile(password);
         free(password); //zwalniamy pamięc po dynamicznym zaalokowaniu jej
     }
@@ -82,14 +84,24 @@ char *drawCharacters(unsigned int passwordLength, char *array) {
 }
 
 void printMenu() {
+
     system("cls");
-    printf("Generator hasel!\n");
-    printf("Wybierz z czego ma sie skladac twoje haslo\n");
-    printf("0.Wyjscie\n");
-    printf("1.Litery\n");
-    printf("2.Cyfry\n");
-    printf("3.Litery i cyfry\n");
-    printf("4.Litery, cyfry i znaki specjalne\n");
+    setColor("green");
+    animation("========Generator hasel========\n");
+    setColor("gray");
+    animation("Wybierz z czego ma sie skladac twoje haslo\n");
+    animation("0.Wyjscie\n");
+    animation("1.Litery\n");
+    animation("2.Cyfry\n");
+    animation("3.Litery i cyfry\n");
+    animation("4.Litery, cyfry i znaki specjalne\n");
+}
+
+void animation(char *text) {
+    for (int i = 0; i < strlen(text); ++i) {
+        printf("%c",text[i]);
+        Sleep(30);
+    }
 }
 
 void savePasswordToFile(char *password) {
@@ -100,32 +112,33 @@ void savePasswordToFile(char *password) {
     if(choice == 'T' || choice == 't'){
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
         if (file == NULL)
-            kolor("czerwony");
+            setColor("czerwony");
             printf("Nie udalo sie zapisac pliku\n");
-            kolor("szary");
+        setColor("szary");
         fputs(password,file); //zapis
         fclose(file); //zamknięcie pliku
     }
 }
-void kolor(char *kolor)
+void setColor(char *color)
 {
     HANDLE hOut;
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (kolor == "zielony")
+    if (color == "green")
     {
         SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     }
-    else if (kolor == "czerwony")
+    else if (color == "red")
     {
         SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
     }
-    else if (kolor == "szary")
-    {
-        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
-    }
-    else if (kolor == "niebieski")
+    else if (color == "blue")
     {
         SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     }
-
+    else if (color == "gray")
+    {
+        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+    }
 }
+
+
