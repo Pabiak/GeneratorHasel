@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h> //potrzebne do time() w srand
-#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen();
+#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen(), strcmp() -> porównanie stringów;
 #include <windows.h> //potrzebne do sleep i handle
 
 void printMenu();
@@ -86,7 +86,6 @@ char *drawCharacters(int passwordLength, char *array) {
 }
 
 void printMenu() {
-
     system("cls");
     setColor("green");
     animation("========Generator hasel========\n");
@@ -126,12 +125,10 @@ void savePasswordToFile(char *password) {
 void setColor(char *color) {
     HANDLE hOut;
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (color == "green")
+    if (strcmp(color,"green") == 0)
         SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    else if (color == "red")
+    else if (strcmp(color,"red") == 0)
         SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-    else if (color == "blue")
-        SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    else if (color == "gray")
+    else if (strcmp(color,"gray") == 0)
         SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
 }
