@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h> //potrzebne do time() w srand
-#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen(), strcmp() -> porównanie stringów;
-#include <windows.h> //potrzebne do sleep i handle
+#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen();
 
 void printMenu();
 
@@ -15,10 +14,6 @@ void controlLoop();
 int getInt();
 
 void savePasswordToFile(char *password);
-
-void setColor(char *color);
-
-void animation(char *text, int delay);
 
 int main() {
     controlLoop(); //głowna funkcja programu
@@ -35,9 +30,7 @@ void controlLoop() {
         printf("%s", constant);
         int passwordLength = getInt();
         char *password = generatePassword(choice, passwordLength); //funkcja generatePassword zwraca haslo do password
-        setColor("red");
         printf("%s\n", password);
-        setColor("gray");
         savePasswordToFile(password);
         free(password); //zwalniamy pamięc po dynamicznym zaalokowaniu jej
     }
@@ -87,49 +80,25 @@ char *drawCharacters(int passwordLength, char *array) {
 
 void printMenu() {
     system("cls");
-    setColor("green");
-    animation("========Generator hasel========\n",30);
-    setColor("gray");
-    animation("Wybierz z czego ma sie skladac twoje haslo\n",30);
-    animation("0.Wyjscie\n",25);
-    animation("1.Litery\n",25);
-    animation("2.Cyfry\n",25);
-    animation("3.Litery i cyfry\n",25);
-    animation("4.Litery, cyfry i znaki specjalne\n",25);
-}
-
-void animation(char *text, int delay) {
-    for (int i = 0; i < strlen(text); ++i) {
-        printf("%c", text[i]);
-        Sleep(delay);
-    }
+    printf("Generator hasel!\n");
+    printf("Wybierz z czego ma sie skladac twoje haslo\n");
+    printf("0.Wyjscie\n");
+    printf("1.Litery\n");
+    printf("2.Cyfry\n");
+    printf("3.Litery i cyfry\n");
+    printf("4.Litery, cyfry i znaki specjalne\n");
 }
 
 void savePasswordToFile(char *password) {
     printf("Czy chcesz zapisac haslo? t/n: ");
     char choice, temp;
     temp = getchar(); //taki bufor dla entera
-    choice = getchar();
+    scanf("%c", &choice);
     if (choice == 'T' || choice == 't') {
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
-        if (file == NULL) {
-            setColor("red");
+        if (file == NULL)
             printf("Nie udalo sie zapisac pliku\n");
-            setColor("gray");
-        }
         fputs(password, file); //zapis
         fclose(file); //zamknięcie pliku
     }
 }
-
-void setColor(char *color) {
-    HANDLE hOut;
-    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (strcmp(color,"green") == 0)
-        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    else if (strcmp(color,"red") == 0)
-        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-    else if (strcmp(color,"gray") == 0)
-        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
-}
-
