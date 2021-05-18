@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h> //potrzebne do time() w srand
 #include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen();
-
+#include <windows.h>
 void printMenu();
 
 char *generatePassword(int choice, unsigned int length);
@@ -14,6 +14,8 @@ void controlLoop();
 int getInt();
 
 void savePasswordToFile(char *password);
+
+void kolor(char *kolor);
 
 int main() {
     controlLoop(); //głowna funkcja programu
@@ -30,7 +32,9 @@ void controlLoop() {
         printf("%s", constant);
         unsigned int passwordLength = getInt();
         char *password = generatePassword(choice, passwordLength); //funkcja generatePassword zwraca haslo do password
+        kolor("czerwony");
         printf("%s\n", password);
+        kolor("szary");
         savePasswordToFile(password);
         free(password); //zwalniamy pamięc po dynamicznym zaalokowaniu jej
     }
@@ -96,8 +100,32 @@ void savePasswordToFile(char *password) {
     if(choice == 'T' || choice == 't'){
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
         if (file == NULL)
+            kolor("czerwony");
             printf("Nie udalo sie zapisac pliku\n");
+            kolor("szary");
         fputs(password,file); //zapis
         fclose(file); //zamknięcie pliku
     }
+}
+void kolor(char *kolor)
+{
+    HANDLE hOut;
+    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (kolor == "zielony")
+    {
+        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    }
+    else if (kolor == "czerwony")
+    {
+        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+    }
+    else if (kolor == "szary")
+    {
+        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+    }
+    else if (kolor == "niebieski")
+    {
+        SetConsoleTextAttribute(hOut, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    }
+
 }
