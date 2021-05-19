@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h> //potrzebne do time() w srand
-#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen();
+#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen(), strcmp() -> porównanie stringów;
+#include <windows.h> //potrzebne do sleep i handle
 
 void printMenu();
 
@@ -66,12 +67,13 @@ char *generatePassword(int choice, unsigned int passwordLength) {
     }
 }
 
-char *drawCharacters(unsigned int passwordLength, char *array) {
+char *drawCharacters(int passwordLength, char *array) {
     char *password = malloc(passwordLength); //dynamiczne zaalakowanie pamięci.
-    unsigned int arrayLength = strlen(array); //pobieramy dlugosc łańcucha znaków
+    int arrayLength = strlen(array); //pobieramy dlugosc łańcucha znaków
 
     for (int i = 0; i < passwordLength; i++)
-        password[i] = array[rand() % arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
+        password[i] = array[rand() %
+                            arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
 
     password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wyświetlania
     return password;
@@ -97,7 +99,21 @@ void savePasswordToFile(char *password) {
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
         if (file == NULL)
             printf("Nie udalo sie zapisac pliku\n");
-        fputs(password,file); //zapis
+            setColor("gray");
+        }
+        fputs(password, file); //zapis
         fclose(file); //zamknięcie pliku
     }
 }
+
+void setColor(char *color) {
+    HANDLE hOut;
+    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (strcmp(color,"green") == 0)
+        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    else if (strcmp(color,"red") == 0)
+        SetConsoleTextAttribute(hOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+    else if (strcmp(color,"gray") == 0)
+        SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
+}
+
