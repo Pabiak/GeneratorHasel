@@ -93,7 +93,7 @@ void savePasswordToFile(char *password) {
     printf("Czy chcesz zapisac haslo? t/n: ");
     char choice, temp;
     temp = getchar(); //taki bufor dla entera
-    scanf("%c", &choice);
+    choice = getchar();
     if (choice == 'T' || choice == 't') {
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
         if (file == NULL)
