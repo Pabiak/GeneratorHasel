@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h> //potrzebne do time() w srand
-#include <string.h> //potrzebne do pobrania dlugo�ci tablicy -> funkcja strlen(), strcmp() -> por�wnanie string�w;
+#include <string.h> //potrzebne do pobrania dlugości tablicy -> funkcja strlen(), strcmp() -> porównanie stringów;
 #include <windows.h> //potrzebne do sleep i handle
 
 void printMenu();
@@ -21,16 +21,16 @@ void setColor(char *color);
 void animation(char *text, int delay);
 
 int main() {
-    controlLoop(); //g�owna funkcja programu
+    controlLoop(); //góowna funkcja programu
     return 0;
 }
 
 void controlLoop() {
     srand(time(NULL)); // Punkt startowy, potrzebny generowania serii pseudolosowych liczb
-    while (1) { //niesko�czona p�tla, program ma si� zap�tla�
+    while (1) { //nieskończona pętla, program ma się zapętlać
         printMenu();
         int choice = getInt();
-        if (choice == 0) break; //w przypadku wyboru 0 program ma si� zako�czy�
+        if (choice == 0) break; //w przypadku wyboru 0 program ma się zakończyć
         const char *constant = "Podaj dlugosc hasla:";
         printf("%s", constant);
         int passwordLength = getInt();
@@ -39,14 +39,14 @@ void controlLoop() {
         printf("%s\n", password);
         setColor("gray");
         savePasswordToFile(password);
-        free(password); //zwalniamy pami�c po dynamicznym zaalokowaniu jej
+        free(password); //zwalniamy pamięc po dynamicznym zaalokowaniu jej
     }
 }
 
 int getInt() {
     int integer, temp, status;
-    status = scanf("%d", &integer); //scanf zwr�ci 1 - true lub 0 - false do status
-    while (status != 1) { //dop�ki status nie b�dzie r�wny true
+    status = scanf("%d", &integer); //scanf zwróci 1 - true lub 0 - false do status
+    while (status != 1) { //dopóki status nie będzie równy true
         temp = getchar();
         status = scanf("%d", &integer);
     }
@@ -59,7 +59,7 @@ char *generatePassword(int choice, int passwordLength) {
     char *lettersNumbersArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     char *everythingArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+?;:<>,.|`~";
 
-    //do losowania znak�w u�ywam jednej funkcji, zmieniam jedynie ci�gu znak�w, z kt�rych s� losowane
+    //do losowania znaków używam jednej funkcji, zmieniam jedynie ciągu znaków, z których są losowane
     switch (choice) {
         case 1:
             return drawCharacters(passwordLength, lettersArray);
@@ -74,14 +74,14 @@ char *generatePassword(int choice, int passwordLength) {
 }
 
 char *drawCharacters(int passwordLength, char *array) {
-    char *password = malloc(passwordLength); //dynamiczne zaalakowanie pami�ci.
-    int arrayLength = strlen(array); //pobieramy dlugosc �a�cucha znak�w
+    char *password = malloc(passwordLength); //dynamiczne zaalakowanie pamięci.
+    int arrayLength = strlen(array); //pobieramy dlugosc łańcucha znaków
 
     for (int i = 0; i < passwordLength; i++)
         password[i] = array[rand() %
-                            arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc �a�cucha
+                            arrayLength]; //do indexu i przypisujemy znak z array o wylosowanym indexie 0 - dlugosc łańcucha
 
-    password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wy�wietlania
+    password[passwordLength] = '\0'; //przypisanie nulla, potrzebny do poprawnego wyświetlania
     return password;
 }
 
@@ -118,7 +118,7 @@ void savePasswordToFile(char *password) {
             setColor("gray");
         }
         fputs(password, file); //zapis
-        fclose(file); //zamkni�cie pliku
+        fclose(file); //zamknięcie pliku
     }
 }
 
