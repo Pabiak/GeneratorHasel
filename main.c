@@ -18,7 +18,7 @@ void savePasswordToFile(char *password);
 
 void setColor(char *color);
 
-void animation(char *text);
+void animation(char *text, int delay);
 
 int main() {
     controlLoop(); //głowna funkcja programu
@@ -88,20 +88,20 @@ char *drawCharacters(int passwordLength, char *array) {
 void printMenu() {
     system("cls");
     setColor("green");
-    animation("========Generator hasel========\n");
+    animation("========Generator hasel========\n",30);
     setColor("gray");
-    animation("Wybierz z czego ma sie skladac twoje haslo\n");
-    animation("0.Wyjscie\n");
-    animation("1.Litery\n");
-    animation("2.Cyfry\n");
-    animation("3.Litery i cyfry\n");
-    animation("4.Litery, cyfry i znaki specjalne\n");
+    animation("Wybierz z czego ma sie skladac twoje haslo\n",30);
+    animation("0.Wyjscie\n",15);
+    animation("1.Litery\n",15);
+    animation("2.Cyfry\n",15);
+    animation("3.Litery i cyfry\n",15);
+    animation("4.Litery, cyfry i znaki specjalne\n",15);
 }
 
-void animation(char *text) {
+void animation(char *text, int delay) {
     for (int i = 0; i < strlen(text); ++i) {
         printf("%c", text[i]);
-        Sleep(30);
+        Sleep(delay);
     }
 }
 
@@ -109,7 +109,7 @@ void savePasswordToFile(char *password) {
     printf("Czy chcesz zapisac haslo? t/n: ");
     char choice, temp;
     temp = getchar(); //taki bufor dla entera
-    scanf("%c", &choice);
+    choice = getchar();
     if (choice == 'T' || choice == 't') {
         FILE *file = fopen("password.txt", "w"); //pierwszy parametr to nazwa pliku, drugi to tryb - w oznacza write
         if (file == NULL) {
