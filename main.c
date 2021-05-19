@@ -91,11 +91,11 @@ void printMenu() {
     animation("========Generator hasel========\n",30);
     setColor("gray");
     animation("Wybierz z czego ma sie skladac twoje haslo\n",30);
-    animation("0.Wyjscie\n",15);
-    animation("1.Litery\n",15);
-    animation("2.Cyfry\n",15);
-    animation("3.Litery i cyfry\n",15);
-    animation("4.Litery, cyfry i znaki specjalne\n",15);
+    animation("0.Wyjscie\n",25);
+    animation("1.Litery\n",25);
+    animation("2.Cyfry\n",25);
+    animation("3.Litery i cyfry\n",25);
+    animation("4.Litery, cyfry i znaki specjalne\n",25);
 }
 
 void animation(char *text, int delay) {
@@ -132,3 +132,4 @@ void setColor(char *color) {
     else if (strcmp(color,"gray") == 0)
         SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
 }
+
